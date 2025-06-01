@@ -1,6 +1,16 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
+// Remote module imports (to be uncommented during presentation)
+// import Button from 'remote/Button'
+// import Counter from 'remote/Counter'
+// import { UserProvider, useUser } from 'remote/UserContext'
+// import RemoteRoutes from 'remote/routes'
+
+// Components for demos (to be created during presentation)
+import ErrorBoundary from './components/ErrorBoundary'
+import RemoteComponent from './components/RemoteComponent'
+
 function App() {
   return (
     <Router>
@@ -66,6 +76,8 @@ function App() {
               <Route path="/demo3" element={<Demo3 />} />
               <Route path="/demo4" element={<Demo4 />} />
               <Route path="/demo5" element={<Demo5 />} />
+              {/* Remote routes (to be uncommented during presentation) */}
+              {/* <Route path="/remote/*" element={<RemoteRoutes />} /> */}
             </Routes>
           </div>
         </main>
@@ -107,46 +119,84 @@ const Home = () => (
   </div>
 )
 
-// Demo Components (Placeholders)
-const Demo1 = () => (
-  <div className="px-4 py-6 sm:px-0">
-    <div className="bg-white overflow-hidden shadow rounded-lg">
-      <div className="px-4 py-5 sm:p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Demo 1: Error Boundary
-        </h2>
-        <p className="text-gray-600">
-          This demo will show how to render components from remote with error boundary.
-        </p>
-        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-          <p className="text-yellow-800">
-            Module Federation not configured yet. This will be implemented during the presentation.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-)
+// Demo Components
+const Demo1 = () => {
+  const [showRemote, setShowRemote] = React.useState(false)
 
-const Demo2 = () => (
-  <div className="px-4 py-6 sm:px-0">
-    <div className="bg-white overflow-hidden shadow rounded-lg">
-      <div className="px-4 py-5 sm:p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Demo 2: Live Component Updates
-        </h2>
-        <p className="text-gray-600">
-          This demo will show live changes of remote components.
-        </p>
-        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-          <p className="text-yellow-800">
-            Module Federation not configured yet. This will be implemented during the presentation.
+  return (
+    <div className="px-4 py-6 sm:px-0">
+      <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Demo 1: Error Boundary
+          </h2>
+          <p className="text-gray-600 mb-4">
+            This demo shows how to render components from remote with error boundary protection.
           </p>
+          
+          <button
+            onClick={() => setShowRemote(!showRemote)}
+            className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            {showRemote ? 'Hide' : 'Show'} Remote Component
+          </button>
+
+          {showRemote && (
+            <div className="mt-4">
+              {/* Remote Button with Error Boundary (to be implemented) */}
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
+                <p className="text-yellow-800">
+                  RemoteComponent with ErrorBoundary will be implemented during presentation
+                </p>
+              </div>
+              {/* <RemoteComponent module="Button" scope="remote">
+                Click Me!
+              </RemoteComponent> */}
+            </div>
+          )}
         </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
+
+const Demo2 = () => {
+  const [showCounter, setShowCounter] = React.useState(false)
+
+  return (
+    <div className="px-4 py-6 sm:px-0">
+      <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Demo 2: Live Component Updates
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Make changes to the Counter component in the remote app and see them reflect here.
+          </p>
+          
+          <button
+            onClick={() => setShowCounter(!showCounter)}
+            className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            {showCounter ? 'Hide' : 'Show'} Counter
+          </button>
+
+          {showCounter && (
+            <div className="mt-4">
+              {/* Remote Counter (to be implemented) */}
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
+                <p className="text-yellow-800">
+                  Remote Counter component will be loaded here during presentation
+                </p>
+              </div>
+              {/* <RemoteComponent module="Counter" scope="remote" /> */}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const Demo3 = () => (
   <div className="px-4 py-6 sm:px-0">
@@ -155,12 +205,28 @@ const Demo3 = () => (
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Demo 3: Shared Routing
         </h2>
-        <p className="text-gray-600">
-          This demo will show how to share routing between host and remote.
+        <p className="text-gray-600 mb-4">
+          Remote routes are integrated into the host application's routing system.
         </p>
-        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
+        
+        <div className="space-y-2">
+          <Link 
+            to="/remote/page1" 
+            className="block px-4 py-2 bg-blue-600 text-white text-center rounded hover:bg-blue-700"
+          >
+            Go to Remote Page 1
+          </Link>
+          <Link 
+            to="/remote/page2" 
+            className="block px-4 py-2 bg-blue-600 text-white text-center rounded hover:bg-blue-700"
+          >
+            Go to Remote Page 2
+          </Link>
+        </div>
+
+        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
           <p className="text-yellow-800">
-            Module Federation not configured yet. This will be implemented during the presentation.
+            Remote routes will be integrated during presentation
           </p>
         </div>
       </div>
@@ -168,25 +234,46 @@ const Demo3 = () => (
   </div>
 )
 
-const Demo4 = () => (
-  <div className="px-4 py-6 sm:px-0">
-    <div className="bg-white overflow-hidden shadow rounded-lg">
-      <div className="px-4 py-5 sm:p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Demo 4: Shared Context
-        </h2>
-        <p className="text-gray-600">
-          This demo will show how to share context between host and remote.
-        </p>
-        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-          <p className="text-yellow-800">
-            Module Federation not configured yet. This will be implemented during the presentation.
+const Demo4 = () => {
+  // const { user, setUser } = useUser() // To be uncommented during presentation
+
+  return (
+    <div className="px-4 py-6 sm:px-0">
+      <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Demo 4: Shared Context
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Share React context between host and remote applications.
           </p>
+          
+          {/* UserProvider wrapper and context usage (to be implemented) */}
+          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
+            <p className="text-yellow-800">
+              UserContext from remote will be integrated during presentation
+            </p>
+          </div>
+          
+          {/* Example of what will be shown:
+          <div className="mt-4">
+            {user ? (
+              <div>
+                <p>Logged in as: {user.name}</p>
+                <button onClick={() => setUser(null)}>Logout</button>
+              </div>
+            ) : (
+              <button onClick={() => setUser({ id: '1', name: 'John Doe', email: 'john@example.com' })}>
+                Login
+              </button>
+            )}
+          </div>
+          */}
         </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 const Demo5 = () => (
   <div className="px-4 py-6 sm:px-0">
@@ -195,12 +282,23 @@ const Demo5 = () => (
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Demo 5: Type Generation
         </h2>
-        <p className="text-gray-600">
-          This demo will show automatic type generation for remote modules.
+        <p className="text-gray-600 mb-4">
+          Automatic TypeScript type generation ensures type safety across micro frontends.
         </p>
-        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
+        
+        <div className="bg-gray-100 p-4 rounded">
+          <h3 className="font-semibold mb-2">Type Generation Process:</h3>
+          <ol className="list-decimal list-inside space-y-1 text-sm">
+            <li>Remote builds with vite-plugin-dts</li>
+            <li>Types are generated in dist/@mf-types/</li>
+            <li>Host syncs types with npm run types:sync</li>
+            <li>Full IntelliSense support in host</li>
+          </ol>
+        </div>
+
+        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
           <p className="text-yellow-800">
-            Module Federation not configured yet. This will be implemented during the presentation.
+            Type generation scripts will be demonstrated during presentation
           </p>
         </div>
       </div>
