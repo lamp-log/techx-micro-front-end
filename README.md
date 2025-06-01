@@ -71,7 +71,11 @@ Shows automatic TypeScript type generation for remote modules.
 
 1. Install Module Federation plugin:
    ```bash
+   # In both host and remote directories:
    npm install -D @originjs/vite-plugin-federation
+   
+   # In remote only (for type generation):
+   npm install -D vite-plugin-dts
    ```
 
 2. Configure Module Federation in vite.config.ts files

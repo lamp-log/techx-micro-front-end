@@ -7,6 +7,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 // import { UserProvider, useUser } from 'remote/UserContext'
 // import RemoteRoutes from 'remote/routes'
 
+// Lazy loading pattern (alternative approach)
+// const RemoteButton = React.lazy(() => import('remote/Button'))
+// const RemoteCounter = React.lazy(() => import('remote/Counter'))
+// const RemoteUserProvider = React.lazy(() => import('remote/UserContext'))
+// const RemoteRoutes = React.lazy(() => import('remote/routes'))
+
 // Components for demos (to be created during presentation)
 import ErrorBoundary from './components/ErrorBoundary'
 import RemoteComponent from './components/RemoteComponent'
@@ -171,9 +177,8 @@ const Demo1 = () => {
                   ⚠️ RemoteComponent with ErrorBoundary will be implemented during presentation
                 </p>
               </div>
-              {/* <RemoteComponent module="Button" scope="remote">
-                Click Me!
-              </RemoteComponent> */}
+              {/* Uncomment during demo: */}
+              {/* <RemoteComponent module="Button" scope="remote" {...{ onClick: () => alert('Remote button clicked!'), children: 'Remote Button' }} /> */}
             </div>
           )}
         </div>
@@ -211,6 +216,7 @@ const Demo2 = () => {
                   ⚠️ Remote Counter component will be loaded here during presentation
                 </p>
               </div>
+              {/* Uncomment during demo: */}
               {/* <RemoteComponent module="Counter" scope="remote" /> */}
             </div>
           )}
@@ -267,7 +273,7 @@ const Demo4 = () => {
             Demo 4: Shared Context
           </h2>
           <p className="text-gray-300 mb-6">
-            Share React context between host and remote applications for unified state management.
+            Share React context between host and remote applications.
           </p>
           
           {/* UserProvider wrapper and context usage (to be implemented) */}
@@ -277,20 +283,29 @@ const Demo4 = () => {
             </p>
           </div>
           
-          {/* Example of what will be shown:
-          <div className="mt-6 p-6 bg-gray-900 rounded-lg border border-gray-700">
-            {user ? (
-              <div className="space-y-3">
-                <p className="text-gray-300">Logged in as: <span className="text-blue-400 font-medium">{user.name}</span></p>
-                <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Logout</button>
-              </div>
-            ) : (
-              <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                Login
-              </button>
-            )}
-          </div>
-          */}
+          {/* Uncomment during demo: */}
+          {/* <UserProvider>
+            <div className="mt-6 p-6 bg-gray-900 rounded-lg border border-gray-700">
+              {user ? (
+                <div className="space-y-3">
+                  <p className="text-gray-300">Logged in as: <span className="text-blue-400 font-medium">{user.name}</span></p>
+                  <button 
+                    onClick={() => setUser(null)}
+                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setUser({ id: '1', name: 'John Doe', email: 'john@example.com' })}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                >
+                  Login
+                </button>
+              )}
+            </div>
+          </UserProvider> */}
         </div>
       </div>
     </div>

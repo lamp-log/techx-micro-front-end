@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
+    // Add during demo:
+    // "types:sync": "./scripts/sync-types.sh && ./scripts/gen-remotes-dts.sh"
   },
   "dependencies": {
     "react": "^19.1.0",
