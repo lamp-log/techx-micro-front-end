@@ -3,9 +3,9 @@
 
 const PlaceholderRemoteComponent = () => {
   return (
-    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
-      <p className="text-yellow-800">
-        RemoteComponent wrapper will be implemented during the presentation
+    <div className="p-6 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
+      <p className="text-yellow-400">
+        ⚠️ RemoteComponent wrapper will be implemented during the presentation
       </p>
     </div>
   )
