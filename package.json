@@ -1,0 +1,28 @@
+{
+  "name": "techx-micro-front-end",
+  "version": "1.0.0",
+  "description": "Micro Frontend Demo with Module Federation",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:remote\" \"npm run dev:host\"",
+    "dev:host": "cd host && npm run dev",
+    "dev:remote": "cd remote && npm run dev",
+    "build": "npm run build:remote && npm run build:host",
+    "build:host": "cd host && npm run build",
+    "build:remote": "cd remote && npm run build",
+    "install:all": "npm install && cd host && npm install && cd ../remote && npm install",
+    "clean": "rm -rf host/node_modules host/dist remote/node_modules remote/dist"
+  },
+  "keywords": [
+    "micro-frontend",
+    "module-federation",
+    "react",
+    "typescript",
+    "vite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
