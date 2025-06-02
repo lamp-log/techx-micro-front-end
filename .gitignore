@@ -31,5 +31,5 @@ lerna-debug.log*
 .env*.local
 
 # Type generation
-src/@types/remote
-src/@types/remotes.d.ts
+**/src/@types/remote
+**/src/@types/remotes.d.ts

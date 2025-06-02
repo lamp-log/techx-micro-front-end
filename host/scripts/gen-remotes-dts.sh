@@ -5,26 +5,46 @@ set -e
 
 REMOTE_DIR="src/@types/remote"
 OUT_FILE="src/@types/remotes.d.ts"
+REMOTE_VITE_CONFIG="../remote/vite.config.ts"
 
 echo "// AUTO-GENERATED. DO NOT EDIT." > "$OUT_FILE"
 echo "" >> "$OUT_FILE"
 
-find "$REMOTE_DIR" -type f -name "*.d.ts" | while read -r file; do
-  # Remove leading path and .d.ts extension
-  rel="${file#$REMOTE_DIR/}"
-  mod="remote/${rel%.d.ts}"
-  import="./remote/${rel%.d.ts}"
+# Extract lines containing expose definitions from vite.config.ts
+# Look for lines with pattern: "./Something": "./src/path/to/Something"
+grep -E '^\s*"\./[^"]+"\s*:\s*"' "$REMOTE_VITE_CONFIG" | while read -r line; do
+  # Extract the exposed name (e.g., "./Button" -> "Button")
+  exposed_name=$(echo "$line" | sed -E 's/^[[:space:]]*"\.\/([^"]+)".*/\1/')
   
-  # If the file is an index, strip /index from the module name
-  if [[ "$mod" == */index ]]; then
-    mod="${mod%/index}"
+  # Extract the file path (e.g., "./src/components/Button" -> "components/Button")
+  file_path=$(echo "$line" | sed -E 's/.*"\.\/src\/([^"]+)".*/\1/')
+  
+  # Remove file extension if present
+  file_path=$(echo "$file_path" | sed 's/\.tsx$//' | sed 's/\.ts$//')
+  
+  # Skip if we couldn't extract both values
+  if [ -z "$exposed_name" ] || [ -z "$file_path" ]; then
+    continue
   fi
   
-  echo "declare module \"$mod\" {" >> "$OUT_FILE"
-  echo "  export { default } from \"$import\";" >> "$OUT_FILE"
-  echo "  export * from \"$import\";" >> "$OUT_FILE"
-  echo "}" >> "$OUT_FILE"
-  echo "" >> "$OUT_FILE"
+  # The module name for imports
+  mod_name="remote/${exposed_name}"
+  
+  # Check if the type file exists
+  if [ -f "$REMOTE_DIR/${file_path}.d.ts" ]; then
+    import_path="./remote/${file_path}"
+    
+    echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
+    echo "  export { default } from \"$import_path\";" >> "$OUT_FILE"
+    echo "  export * from \"$import_path\";" >> "$OUT_FILE"
+    echo "}" >> "$OUT_FILE"
+    echo "" >> "$OUT_FILE"
+    
+    echo "  ✓ Generated types for: $mod_name"
+  else
+    echo "  ⚠ Warning: Type file not found for ${exposed_name} at $REMOTE_DIR/${file_path}.d.ts"
+  fi
 done
 
-echo "✅ remotes.d.ts generated."
+echo ""
+echo "✅ remotes.d.ts generated from vite.config.ts"

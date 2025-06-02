@@ -8,26 +8,6 @@ interface RemoteComponentProps {
   [key: string]: any
 }
 
-// Placeholder RemoteComponent - Full implementation during presentation
-const RemoteComponent: React.FC<RemoteComponentProps> = ({
-  module,
-  scope,
-  fallback = <div className="p-4 text-gray-400">Loading remote component...</div>,
-  ...props
-}) => {
-  return (
-    <div className="p-6 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
-      <p className="text-yellow-400">
-        ⚠️ RemoteComponent will load {scope}/{module} during presentation
-      </p>
-    </div>
-  )
-}
-
-export default RemoteComponent
-
-// Full implementation to add during presentation:
-/*
 const loadComponent = (scope: string, module: string) => {
   if (scope === 'remote') {
     switch (module) {
@@ -62,4 +42,5 @@ const RemoteComponent: React.FC<RemoteComponentProps> = ({
     </ErrorBoundary>
   )
 }
-*/
+
+export default RemoteComponent

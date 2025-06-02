@@ -1,20 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-
-// Remote module imports (to be uncommented during presentation)
-// import Button from 'remote/Button'
-// import Counter from 'remote/Counter'
-// import { UserProvider, useUser } from 'remote/UserContext'
-// import RemoteRoutes from 'remote/routes'
-
-// Lazy loading pattern (alternative approach)
-// const RemoteButton = React.lazy(() => import('remote/Button'))
-// const RemoteCounter = React.lazy(() => import('remote/Counter'))
-// const RemoteUserProvider = React.lazy(() => import('remote/UserContext'))
-// const RemoteRoutes = React.lazy(() => import('remote/routes'))
-
-// Components for demos (to be created during presentation)
-import ErrorBoundary from './components/ErrorBoundary'
+import { UserProvider, useUser } from 'remote/UserContext'
+import RemoteRoutes from 'remote/routes'
 import RemoteComponent from './components/RemoteComponent'
 
 function App() {
@@ -85,7 +72,7 @@ function App() {
               <Route path="/demo4" element={<Demo4 />} />
               <Route path="/demo5" element={<Demo5 />} />
               {/* Remote routes (to be uncommented during presentation) */}
-              {/* <Route path="/remote/*" element={<RemoteRoutes />} /> */}
+              <Route path="/remote/*" element={<RemoteRoutes />} />
             </Routes>
           </div>
         </main>
@@ -172,13 +159,7 @@ const Demo1 = () => {
           {showRemote && (
             <div className="mt-4">
               {/* Remote Button with Error Boundary (to be implemented) */}
-              <div className="p-6 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
-                <p className="text-yellow-400">
-                  ⚠️ RemoteComponent with ErrorBoundary will be implemented during presentation
-                </p>
-              </div>
-              {/* Uncomment during demo: */}
-              {/* <RemoteComponent module="Button" scope="remote" {...{ onClick: () => alert('Remote button clicked!'), children: 'Remote Button' }} /> */}
+              <RemoteComponent module="Button" scope="remote" {...{ onClick: () => alert('Remote button clicked!'), children: 'Remote Button' }} />
             </div>
           )}
         </div>
@@ -211,13 +192,7 @@ const Demo2 = () => {
           {showCounter && (
             <div className="mt-4">
               {/* Remote Counter (to be implemented) */}
-              <div className="p-6 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
-                <p className="text-yellow-400">
-                  ⚠️ Remote Counter component will be loaded here during presentation
-                </p>
-              </div>
-              {/* Uncomment during demo: */}
-              {/* <RemoteComponent module="Counter" scope="remote" /> */}
+              <RemoteComponent module="Counter" scope="remote" />
             </div>
           )}
         </div>
@@ -263,7 +238,15 @@ const Demo3 = () => (
 )
 
 const Demo4 = () => {
-  // const { user, setUser } = useUser() // To be uncommented during presentation
+  return (
+    <UserProvider>
+      <Demo4Content />
+    </UserProvider>
+  )
+}
+
+const Demo4Content = () => {
+  const { user, setUser } = useUser()
 
   return (
     <div className="space-y-6">
@@ -276,36 +259,27 @@ const Demo4 = () => {
             Share React context between host and remote applications.
           </p>
           
-          {/* UserProvider wrapper and context usage (to be implemented) */}
-          <div className="p-6 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
-            <p className="text-yellow-400">
-              ⚠️ UserContext from remote will be integrated during presentation
-            </p>
-          </div>
-          
-          {/* Uncomment during demo: */}
-          {/* <UserProvider>
-            <div className="mt-6 p-6 bg-gray-900 rounded-lg border border-gray-700">
-              {user ? (
-                <div className="space-y-3">
-                  <p className="text-gray-300">Logged in as: <span className="text-blue-400 font-medium">{user.name}</span></p>
-                  <button 
-                    onClick={() => setUser(null)}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
+          <div className="mt-6 p-6 bg-gray-900 rounded-lg border border-gray-700">
+            {user ? (
+              <div className="space-y-3">
+                <p className="text-gray-300">Logged in as: <span className="text-blue-400 font-medium">{user.name}</span></p>
+                <p className="text-gray-300">Email: {user.email}</p>
                 <button 
-                  onClick={() => setUser({ id: '1', name: 'John Doe', email: 'john@example.com' })}
-                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                  onClick={() => setUser(null)}
+                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                 >
-                  Login
+                  Logout
                 </button>
-              )}
-            </div>
-          </UserProvider> */}
+              </div>
+            ) : (
+              <button 
+                onClick={() => setUser({ id: '1', name: 'John Doe', email: 'john@example.com' })}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              >
+                Login
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
