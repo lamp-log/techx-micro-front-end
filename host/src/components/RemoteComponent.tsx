@@ -5,7 +5,7 @@ interface RemoteComponentProps {
   module: string
   scope: string
   fallback?: React.ReactNode
-  [key: string]: any
+  [key: string]: unknown
 }
 
 const loadComponent = (scope: string, module: string) => {
