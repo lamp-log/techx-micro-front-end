@@ -3,21 +3,24 @@ import { Routes, Route, Link } from 'react-router-dom'
 export const RemotePage1 = () => (
   <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
     <div className="max-w-4xl mx-auto">
-      <Link 
+      <Link
         to="/"
         className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6"
       >
         ← Back to Components
       </Link>
       <div className="bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-700">
-        <h2 className="text-2xl font-bold text-purple-400 mb-4">Remote Page 1</h2>
+        <h2 className="text-2xl font-bold text-purple-400 mb-4">
+          Remote Page 1
+        </h2>
         <p className="text-gray-300 mb-4">
           This is a page from the remote application! It demonstrates how we can
           share routes between micro frontends.
         </p>
         <div className="mt-6 p-6 bg-blue-900/20 rounded-lg border border-blue-700/50">
           <p className="text-blue-400">
-            📍 This route is defined in the remote application but rendered in the host.
+            📍 This route is defined in the remote application but rendered in
+            the host.
           </p>
         </div>
       </div>
@@ -28,14 +31,16 @@ export const RemotePage1 = () => (
 export const RemotePage2 = () => (
   <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
     <div className="max-w-4xl mx-auto">
-      <Link 
+      <Link
         to="/"
         className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6"
       >
         ← Back to Components
       </Link>
       <div className="bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-700">
-        <h2 className="text-2xl font-bold text-purple-400 mb-4">Remote Page 2</h2>
+        <h2 className="text-2xl font-bold text-purple-400 mb-4">
+          Remote Page 2
+        </h2>
         <p className="text-gray-300 mb-4">
           Another page from the remote application with different content.
         </p>
@@ -63,18 +68,23 @@ const RemoteRoutes = () => {
     <Routes>
       <Route path="page1" element={<RemotePage1 />} />
       <Route path="page2" element={<RemotePage2 />} />
-      <Route path="/" element={
-        <div className="bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-700">
-          <h3 className="text-xl font-bold text-purple-400 mb-4">Remote Routes</h3>
-          <p className="text-gray-300 mb-4">
-            These routes are exposed from the remote application:
-          </p>
-          <ul className="list-disc list-inside text-gray-300 space-y-2">
-            <li>Remote Page 1 - A demo page from remote</li>
-            <li>Remote Page 2 - Another demo page with features</li>
-          </ul>
-        </div>
-      } />
+      <Route
+        path="/"
+        element={
+          <div className="bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-700">
+            <h3 className="text-xl font-bold text-purple-400 mb-4">
+              Remote Routes
+            </h3>
+            <p className="text-gray-300 mb-4">
+              These routes are exposed from the remote application:
+            </p>
+            <ul className="list-disc list-inside text-gray-300 space-y-2">
+              <li>Remote Page 1 - A demo page from remote</li>
+              <li>Remote Page 2 - Another demo page with features</li>
+            </ul>
+          </div>
+        }
+      />
     </Routes>
   )
 }

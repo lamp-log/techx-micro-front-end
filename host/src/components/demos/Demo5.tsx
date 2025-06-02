@@ -8,11 +8,14 @@ const Demo5: React.FC = () => (
           Demo 5: Type Generation
         </h2>
         <p className="text-gray-300 mb-6">
-          Automatic TypeScript type generation ensures type safety across micro frontends.
+          Automatic TypeScript type generation ensures type safety across micro
+          frontends.
         </p>
-        
+
         <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-          <h3 className="font-semibold mb-3 text-blue-400">Type Generation Process:</h3>
+          <h3 className="font-semibold mb-3 text-blue-400">
+            Type Generation Process:
+          </h3>
           <ol className="space-y-2 text-gray-300">
             <li className="flex items-start">
               <span className="text-purple-400 mr-3">1.</span>
@@ -34,9 +37,11 @@ const Demo5: React.FC = () => (
         </div>
 
         <div className="mt-6 bg-gray-900 p-6 rounded-lg border border-gray-700">
-          <h3 className="font-semibold mb-3 text-blue-400">Generated Type Example:</h3>
+          <h3 className="font-semibold mb-3 text-blue-400">
+            Generated Type Example:
+          </h3>
           <pre className="text-sm text-gray-300 bg-black p-4 rounded overflow-x-auto">
-{`declare module "remote/Button" {
+            {`declare module "remote/Button" {
   export { default } from "./remote/components/Button";
   export * from "./remote/components/Button";
 }`}

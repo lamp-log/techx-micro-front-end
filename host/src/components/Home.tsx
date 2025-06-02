@@ -10,10 +10,12 @@ const Home: React.FC = () => (
         <p className="text-gray-300 mb-6">
           A production-ready demonstration of Micro Frontend architecture
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-900 rounded-lg p-6 border border-gray-700">
-            <h3 className="text-lg font-semibold text-purple-400 mb-3">Tech Stack</h3>
+            <h3 className="text-lg font-semibold text-purple-400 mb-3">
+              Tech Stack
+            </h3>
             <ul className="space-y-2 text-gray-300">
               <li className="flex items-center">
                 <span className="text-blue-400 mr-2">▸</span>
@@ -37,11 +39,13 @@ const Home: React.FC = () => (
               </li>
             </ul>
           </div>
-          
+
           <div className="bg-gray-900 rounded-lg p-6 border border-gray-700">
-            <h3 className="text-lg font-semibold text-purple-400 mb-3">Architecture</h3>
+            <h3 className="text-lg font-semibold text-purple-400 mb-3">
+              Architecture
+            </h3>
             <pre className="text-sm text-gray-300 bg-black p-4 rounded overflow-x-auto">
-{`micro-fe/
+              {`micro-fe/
 ├── host/   # Container (port 5000)
 └── remote/ # Micro frontend (port 5001)`}
             </pre>

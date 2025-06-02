@@ -12,9 +12,10 @@ const Demo1: React.FC = () => {
             Demo 1: Error Boundary
           </h2>
           <p className="text-gray-300 mb-6">
-            Render components from remote with error boundary protection for resilient integration.
+            Render components from remote with error boundary protection for
+            resilient integration.
           </p>
-          
+
           <button
             onClick={() => setShowRemote(!showRemote)}
             className="mb-6 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg"
@@ -24,7 +25,12 @@ const Demo1: React.FC = () => {
 
           {showRemote && (
             <div className="mt-4">
-              <RemoteComponent module="Button" scope="remote" onClick={() => alert('Remote button clicked!')} variant="primary">
+              <RemoteComponent
+                module="Button"
+                scope="remote"
+                onClick={() => alert('Remote button clicked!')}
+                variant="primary"
+              >
                 Remote Button
               </RemoteComponent>
             </div>

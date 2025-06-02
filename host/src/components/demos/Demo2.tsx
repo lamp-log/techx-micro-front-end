@@ -12,9 +12,11 @@ const Demo2: React.FC = () => {
             Demo 2: Live Component Updates
           </h2>
           <p className="text-gray-300 mb-6">
-            Experience hot module replacement across micro frontends. Edit the Counter component in the remote app and watch it update here instantly.
+            Experience hot module replacement across micro frontends. Edit the
+            Counter component in the remote app and watch it update here
+            instantly.
           </p>
-          
+
           <button
             onClick={() => setShowCounter(!showCounter)}
             className="mb-6 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg"

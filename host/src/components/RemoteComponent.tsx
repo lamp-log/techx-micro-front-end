@@ -29,7 +29,9 @@ const loadComponent = (scope: string, module: string) => {
 const RemoteComponent: React.FC<RemoteComponentProps> = ({
   module,
   scope,
-  fallback = <div className="p-4 text-gray-400">Loading remote component...</div>,
+  fallback = (
+    <div className="p-4 text-gray-400">Loading remote component...</div>
+  ),
   ...props
 }) => {
   const Component = lazy(() => loadComponent(scope, module))
