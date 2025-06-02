@@ -1,36 +1,63 @@
-# Presentation Guide - Micro Frontend Setup
+# TechX Micro Frontend Presentation Guide
 
-## Pre-Presentation Checklist
+## 🎯 Overview
+This guide combines all presentation materials for demonstrating Micro Frontend architecture using Module Federation with React, TypeScript, and Vite.
 
-1. **Start both applications:**
-   ```bash
-   # Terminal 1
-   cd remote && npm run dev
-   
-   # Terminal 2
-   cd host && npm run dev
-   ```
+---
 
-2. **Verify both apps are running:**
-   - Host: http://localhost:5000
-   - Remote: http://localhost:5001
+## 📋 Pre-Presentation Setup
 
-## Step-by-Step Implementation During Presentation
+### Environment Check
+- [ ] Both applications ready (host:5000, remote:5001)
+- [ ] Clear browser cache
+- [ ] Code editor open with both projects
+- [ ] Terminal windows ready (3 terminals needed)
+
+### Initial State Verification
+```bash
+# Terminal 1 - Remote Build & Watch
+cd remote && npm run build:watch
+
+# Terminal 2 - Remote Preview
+cd remote && npm run preview
+
+# Terminal 3 - Host Dev
+cd host && npm run dev
+```
+
+Verify both apps are accessible:
+- **Host**: http://localhost:5000
+- **Remote**: http://localhost:5001
+
+---
+
+## 🚀 Live Implementation Steps
 
 ### Step 1: Install Module Federation
 
+Show the installation process:
 ```bash
 # In both host and remote directories
 npm install -D @originjs/vite-plugin-federation
+
+# In remote only (for type generation)
+npm install -D vite-plugin-dts
 ```
 
-### Step 2: Configure Remote vite.config.ts
+### Step 2: Configure Remote Application
 
-Add federation plugin to expose components:
+Update `remote/vite.config.ts`:
 ```typescript
 import federation from "@originjs/vite-plugin-federation"
+import dts from "vite-plugin-dts"
 
-// In plugins array:
+// Add to plugins array:
+dts({
+  insertTypesEntry: true,
+  outDir: "dist/@mf-types",
+  include: ["src/**/*.ts", "src/**/*.tsx"],
+  exclude: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+}),
 federation({
   name: "remote",
   filename: "remoteEntry.js",
@@ -42,15 +69,23 @@ federation({
   },
   shared: ["react", "react-dom", "react-router-dom"],
 })
+
+// Add build configuration:
+build: {
+  modulePreload: false,
+  target: "esnext",
+  minify: false,
+  cssCodeSplit: false,
+}
 ```
 
-### Step 3: Configure Host vite.config.ts
+### Step 3: Configure Host Application
 
-Add federation plugin to consume remote:
+Update `host/vite.config.ts`:
 ```typescript
 import federation from "@originjs/vite-plugin-federation"
 
-// In plugins array:
+// Add to plugins array:
 federation({
   name: "host",
   remotes: {
@@ -58,72 +93,242 @@ federation({
   },
   shared: ["react", "react-dom", "react-router-dom"],
 })
+
+// Add build configuration:
+build: {
+  modulePreload: false,
+  target: "esnext",
+  minify: false,
+  cssCodeSplit: false,
+}
 ```
 
-### Step 4: Create ErrorBoundary Component in Host
+### Step 4: Build and Serve Remote
 
-Create `host/src/components/ErrorBoundary.tsx` (code from guide)
+Switch to the build & watch mode:
+```bash
+# Terminal 1 - Build & Watch
+cd remote
+npm run build:watch
 
-### Step 5: Create RemoteComponent Wrapper
+# Terminal 2 - Serve Remote
+cd remote
+npm run preview
 
-Create `host/src/components/RemoteComponent.tsx` (code from guide)
+# Terminal 3 - Host Dev
+cd host
+npm run dev
+```
 
-### Step 6: Update Host App.tsx Demos
+### Step 5: Update Host Components
 
-Replace placeholder demos with actual implementations.
+1. **Update ErrorBoundary.tsx** - Use full implementation
+2. **Update RemoteComponent.tsx** - Use full implementation with lazy loading
+3. **Update App.tsx** - Uncomment imports and demo components
 
-### Step 7: Type Generation Setup
+---
 
-1. Install vite-plugin-dts in remote:
-   ```bash
-   cd remote && npm install -D vite-plugin-dts
-   ```
+## 🎮 Demo Scenarios
 
-2. Add dts plugin to remote vite.config.ts
+### Demo 1: Error Boundary (Resilience)
+**Key Points:**
+- Component isolation
+- Graceful error handling
+- Recovery mechanisms
 
-3. Create type sync scripts in host/scripts/
+**Steps:**
+1. Show RemoteComponent loading Button from remote
+2. Stop remote server (Ctrl+C in Terminal 2)
+3. Demonstrate error boundary catches the failure
+4. Restart remote server (`npm run preview`)
+5. Click "Try again" to show recovery
 
-4. Run type generation
+### Demo 2: Live Component Updates (Development Experience)
+**Key Points:**
+- Hot Module Replacement across apps
+- Independent development
+- Real-time updates
 
-## Demo Flow
-
-### Demo 1: Error Boundary
-1. Show component loading from remote
-2. Stop remote server to trigger error
-3. Show error boundary handling
-4. Restart remote and show recovery
-
-### Demo 2: Live Changes
+**Steps:**
 1. Show Counter component in host
-2. Edit Counter component in remote
-3. Show live updates in host
+2. Edit `remote/src/components/Counter.tsx`
+3. Watch automatic rebuild in Terminal 1
+4. See live updates in host without refresh
 
-### Demo 3: Shared Router
+### Demo 3: Shared Routing (Composition)
+**Key Points:**
+- Route ownership by teams
+- Seamless integration
+- Navigation consistency
+
+**Steps:**
 1. Navigate to Demo 3
-2. Show remote routes integrated
-3. Navigate between remote pages
+2. Show remote routes in navigation
+3. Click remote page links
+4. Demonstrate URL changes and routing
 
-### Demo 4: Shared Context
-1. Show UserContext from remote
-2. Login/logout functionality
-3. State shared across components
+### Demo 4: Shared Context (State Management)
+**Key Points:**
+- Cross-app state sharing
+- Context provider from remote
+- TypeScript support
 
-### Demo 5: TypeGen
-1. Show TypeScript IntelliSense
-2. Run type generation script
-3. Show updated types
+**Steps:**
+1. Show UserContext usage
+2. Login with sample user
+3. Show state persists across demos
+4. Logout and show state clearing
 
-## Key Points to Emphasize
+### Demo 5: Type Generation (Developer Experience)
+**Key Points:**
+- Automatic type generation
+- IntelliSense support
+- Type safety across apps
 
-1. **Independence**: Teams can work independently
-2. **Runtime Integration**: No build-time coupling
-3. **Type Safety**: Full TypeScript support
-4. **Error Resilience**: Graceful degradation
-5. **Developer Experience**: HMR and type generation
+**Steps:**
+1. Show TypeScript errors initially
+2. Run type generation:
+   ```bash
+   cd host
+   npm run types:sync
+   ```
+3. Show generated `remotes.d.ts`
+4. Demonstrate IntelliSense working
+5. Update `tsconfig.json` if needed
 
-## Troubleshooting Tips
+---
 
-- Clear browser cache if module loading fails
-- Ensure both servers are running
-- Check console for CORS errors
-- Verify exposed module paths match imports
+## 🔧 Quick Reference
+
+### Module Federation Configuration
+```typescript
+// Remote - Exposes
+federation({
+  name: "remote",
+  filename: "remoteEntry.js",
+  exposes: {
+    "./ComponentName": "./src/path/to/Component",
+  },
+  shared: ["react", "react-dom"],
+})
+
+// Host - Consumes
+federation({
+  name: "host",
+  remotes: {
+    remote: "http://localhost:5001/assets/remoteEntry.js",
+  },
+  shared: ["react", "react-dom"],
+})
+```
+
+### Import Pattern
+```typescript
+// Dynamic import with error boundary
+const RemoteButton = lazy(() => import("remote/Button"))
+
+<ErrorBoundary>
+  <Suspense fallback={<div>Loading...</div>}>
+    <RemoteButton />
+  </Suspense>
+</ErrorBoundary>
+```
+
+---
+
+## 💡 Key Messages
+
+### Benefits to Emphasize
+1. **Team Autonomy**: Independent development and deployment
+2. **Technology Flexibility**: Different versions/frameworks possible
+3. **Fault Isolation**: Errors don't cascade
+4. **Incremental Migration**: Adopt gradually
+5. **Developer Experience**: Type safety and HMR maintained
+
+### Architecture Advantages
+- Runtime integration (not build-time)
+- No monolithic builds
+- Independent CI/CD pipelines
+- Smaller, focused codebases
+- Clear ownership boundaries
+
+---
+
+## 🚨 Troubleshooting
+
+### Common Issues & Solutions
+
+**"Failed to fetch dynamically imported module"**
+- Check remote is running on correct port
+- Clear browser cache
+- Verify CORS headers in remote vite.config
+
+**Types not syncing**
+- Ensure remote is built first
+- Check `dist/@mf-types` exists
+- Run `npm run types:sync` in host
+
+**Module not found**
+- Verify exposed paths in vite.config
+- Check shared dependency versions
+- Rebuild both applications
+
+**Hot reload not working**
+- Use `build:watch` in remote
+- Keep preview server running
+- Check terminal for build errors
+
+---
+
+## 📝 Presentation Flow
+
+### Opening (2 min)
+- Problem statement: Monolithic frontend challenges
+- Solution: Micro Frontends with Module Federation
+- What we'll demonstrate today
+
+### Setup Demo (5 min)
+- Show initial project structure
+- Install Module Federation
+- Configure both applications
+
+### Feature Demos (15 min)
+- Demo 1: Error Boundary (3 min)
+- Demo 2: Live Updates (3 min)
+- Demo 3: Shared Routing (3 min)
+- Demo 4: Shared Context (3 min)
+- Demo 5: Type Generation (3 min)
+
+### Conclusion (3 min)
+- Recap benefits
+- Use cases
+- Q&A
+
+---
+
+## 🎤 Speaker Notes
+
+### Transitions
+- "Now let's see what happens when things go wrong..."
+- "But what about the development experience?"
+- "How do we maintain type safety?"
+
+### Emphasis Points
+- This is runtime, not build-time integration
+- Each team owns their deployment
+- No coordination needed for releases
+- Type safety is maintained automatically
+
+### Audience Engagement
+- Ask about current frontend challenges
+- Show real-time editing
+- Encourage questions during demos
+
+---
+
+## ✅ Post-Presentation
+
+1. Share GitHub repository
+2. Provide this guide as reference
+3. Offer follow-up discussions
+4. Share additional resources
