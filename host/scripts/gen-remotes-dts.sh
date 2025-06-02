@@ -11,12 +11,13 @@ echo "// AUTO-GENERATED. DO NOT EDIT." > "$OUT_FILE"
 echo "" >> "$OUT_FILE"
 
 # Extract lines containing expose definitions from vite.config.ts
-grep -E '^\s*"\./[^"]+"\s*:\s*"' "$REMOTE_VITE_CONFIG" | while read -r line; do
+# Updated pattern to match any amount of whitespace before the module definition
+grep -E '^\s*['"'"'"]\.\/[^'"'"'"]+['"'"'"]\s*:\s*['"'"'"]' "$REMOTE_VITE_CONFIG" | while read -r line; do
   # Extract the exposed name (e.g., "./Button" -> "Button")
-  exposed_name=$(echo "$line" | sed -E 's/^[[:space:]]*"\.\/([^"]+)".*/\1/')
+  exposed_name=$(echo "$line" | sed -E 's/^[[:space:]]*['"'"'"]\.\/([^'"'"'"]+)['"'"'"].*/\1/')
   
   # Extract the file path (e.g., "./src/components/Button" -> "components/Button")
-  file_path=$(echo "$line" | sed -E 's/.*"\.\/src\/([^"]+)".*/\1/')
+  file_path=$(echo "$line" | sed -E 's/.*['"'"'"]\.\/src\/([^'"'"'"]+)['"'"'"].*/\1/')
   
   # Remove file extension if present
   file_path=$(echo "$file_path" | sed 's/\.tsx$//' | sed 's/\.ts$//')
