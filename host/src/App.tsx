@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { UserProvider, useUser } from 'remote/UserContext'
+import UserProvider, { useUser } from 'remote/UserContext'
 import RemoteRoutes from 'remote/routes'
 import RemoteComponent from './components/RemoteComponent'
 

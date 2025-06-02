@@ -11,7 +11,6 @@ echo "// AUTO-GENERATED. DO NOT EDIT." > "$OUT_FILE"
 echo "" >> "$OUT_FILE"
 
 # Extract lines containing expose definitions from vite.config.ts
-# Look for lines with pattern: "./Something": "./src/path/to/Something"
 grep -E '^\s*"\./[^"]+"\s*:\s*"' "$REMOTE_VITE_CONFIG" | while read -r line; do
   # Extract the exposed name (e.g., "./Button" -> "Button")
   exposed_name=$(echo "$line" | sed -E 's/^[[:space:]]*"\.\/([^"]+)".*/\1/')
@@ -34,10 +33,23 @@ grep -E '^\s*"\./[^"]+"\s*:\s*"' "$REMOTE_VITE_CONFIG" | while read -r line; do
   if [ -f "$REMOTE_DIR/${file_path}.d.ts" ]; then
     import_path="./remote/${file_path}"
     
-    echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
-    echo "  export { default } from \"$import_path\";" >> "$OUT_FILE"
-    echo "  export * from \"$import_path\";" >> "$OUT_FILE"
-    echo "}" >> "$OUT_FILE"
+    # Special handling for UserContext
+    if [ "$exposed_name" = "UserContext" ]; then
+      echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
+      echo "  // Re-export all named exports" >> "$OUT_FILE"
+      echo "  export { UserContext, UserProvider, useUser } from \"$import_path\";" >> "$OUT_FILE"
+      echo "  export type { User, UserContextType } from \"$import_path\";" >> "$OUT_FILE"
+      echo "  " >> "$OUT_FILE"
+      echo "  // Re-export default" >> "$OUT_FILE"
+      echo "  import UserProvider from \"$import_path\";" >> "$OUT_FILE"
+      echo "  export default UserProvider;" >> "$OUT_FILE"
+      echo "}" >> "$OUT_FILE"
+    else
+      echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
+      echo "  export { default } from \"$import_path\";" >> "$OUT_FILE"
+      echo "  export * from \"$import_path\";" >> "$OUT_FILE"
+      echo "}" >> "$OUT_FILE"
+    fi
     echo "" >> "$OUT_FILE"
     
     echo "  ✓ Generated types for: $mod_name"
