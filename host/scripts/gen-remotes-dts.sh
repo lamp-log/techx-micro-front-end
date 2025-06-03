@@ -10,16 +10,44 @@ REMOTE_VITE_CONFIG="../remote/vite.config.ts"
 echo "// AUTO-GENERATED. DO NOT EDIT." > "$OUT_FILE"
 echo "" >> "$OUT_FILE"
 
+# Function to extract content from a file
+extract_content() {
+  local file=$1
+  local indent=$2
+  
+  if [ -f "$file" ]; then
+    # Extract interfaces and types
+    awk -v indent="$indent" '
+      /^export (interface|type)/ {
+        print indent $0
+        in_block = 1
+        brace_count = gsub(/{/, "{")
+        brace_count -= gsub(/}/, "}")
+        if (brace_count == 0) in_block = 0
+        next
+      }
+      in_block {
+        print indent $0
+        brace_count += gsub(/{/, "{")
+        brace_count -= gsub(/}/, "}")
+        if (brace_count == 0) in_block = 0
+      }
+      /^export declare const/ {
+        print indent $0
+      }
+      /^export const/ {
+        gsub(/export const/, "export declare const")
+        print indent $0
+      }
+    ' "$file"
+  fi
+}
+
 # Extract lines containing expose definitions from vite.config.ts
-# Updated pattern to match any amount of whitespace before the module definition
 grep -E '^\s*['"'"'"]\.\/[^'"'"'"]+['"'"'"]\s*:\s*['"'"'"]' "$REMOTE_VITE_CONFIG" | while read -r line; do
-  # Extract the exposed name (e.g., "./Button" -> "Button")
+  # Extract the exposed name and file path
   exposed_name=$(echo "$line" | sed -E 's/^[[:space:]]*['"'"'"]\.\/([^'"'"'"]+)['"'"'"].*/\1/')
-  
-  # Extract the file path (e.g., "./src/components/Button" -> "components/Button")
   file_path=$(echo "$line" | sed -E 's/.*['"'"'"]\.\/src\/([^'"'"'"]+)['"'"'"].*/\1/')
-  
-  # Remove file extension if present
   file_path=$(echo "$file_path" | sed 's/\.tsx$//' | sed 's/\.ts$//')
   
   # Skip if we couldn't extract both values
@@ -27,35 +55,46 @@ grep -E '^\s*['"'"'"]\.\/[^'"'"'"]+['"'"'"]\s*:\s*['"'"'"]' "$REMOTE_VITE_CONFIG
     continue
   fi
   
-  # The module name for imports
   mod_name="remote/${exposed_name}"
+  type_file="$REMOTE_DIR/${file_path}.d.ts"
   
-  # Check if the type file exists
-  if [ -f "$REMOTE_DIR/${file_path}.d.ts" ]; then
-    import_path="./remote/${file_path}"
+  if [ -f "$type_file" ]; then
+    echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
     
-    # Special handling for UserContext
+    # Special handling for UserContext which has multiple files
     if [ "$exposed_name" = "UserContext" ]; then
-      echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
-      echo "  // Re-export all named exports" >> "$OUT_FILE"
-      echo "  export { UserContext, UserProvider, useUser } from \"$import_path\";" >> "$OUT_FILE"
-      echo "  export type { User, UserContextType } from \"$import_path\";" >> "$OUT_FILE"
-      echo "  " >> "$OUT_FILE"
-      echo "  // Re-export default" >> "$OUT_FILE"
-      echo "  import UserProvider from \"$import_path\";" >> "$OUT_FILE"
+      # Extract from context file
+      extract_content "$REMOTE_DIR/contexts/UserContext.context.d.ts" "  " >> "$OUT_FILE"
+      echo "" >> "$OUT_FILE"
+      
+      # Extract UserProvider
+      echo "  export declare const UserProvider: React.FC<{ children: React.ReactNode }>;" >> "$OUT_FILE"
+      
+      # Extract useUser
+      echo "  export declare const useUser: () => UserContextType;" >> "$OUT_FILE"
+      
+      # Default export
+      echo "  const UserProvider: React.FC<{ children: React.ReactNode }>;" >> "$OUT_FILE"
       echo "  export default UserProvider;" >> "$OUT_FILE"
-      echo "}" >> "$OUT_FILE"
     else
-      echo "declare module \"$mod_name\" {" >> "$OUT_FILE"
-      echo "  export { default } from \"$import_path\";" >> "$OUT_FILE"
-      echo "  export * from \"$import_path\";" >> "$OUT_FILE"
-      echo "}" >> "$OUT_FILE"
+      # For other modules, extract content normally
+      extract_content "$type_file" "  " >> "$OUT_FILE"
+      
+      # Handle default export
+      default_export=$(grep "^declare const" "$type_file" | sed -E 's/declare const ([^:]+):.*/\1/')
+      if [ -n "$default_export" ]; then
+        type_info=$(grep "^declare const $default_export" "$type_file" | sed -E 's/declare const [^:]+: (.+);?$/\1/' | sed 's/;$//')
+        echo "  const $default_export: $type_info;" >> "$OUT_FILE"
+        echo "  export default $default_export;" >> "$OUT_FILE"
+      fi
     fi
+    
+    echo "}" >> "$OUT_FILE"
     echo "" >> "$OUT_FILE"
     
     echo "  ✓ Generated types for: $mod_name"
   else
-    echo "  ⚠ Warning: Type file not found for ${exposed_name} at $REMOTE_DIR/${file_path}.d.ts"
+    echo "  ⚠ Warning: Type file not found for ${exposed_name} at $type_file"
   fi
 done
 

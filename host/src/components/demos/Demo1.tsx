@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import RemoteComponent from '../RemoteComponent'
+import RemoteButton from '../RemoteButton'
 
 const Demo1: React.FC = () => {
   const [showRemote, setShowRemote] = useState(false)
@@ -23,47 +23,11 @@ const Demo1: React.FC = () => {
             resilient integration.
           </p>
 
-          <button
-            onClick={handleToggle}
-            className="
-              mb-6 px-6 py-3 
-              bg-gradient-to-r from-blue-500 to-purple-600 
-              text-white rounded-lg 
-              hover:from-blue-600 hover:to-purple-700 
-              transition-all duration-200 
-              font-medium shadow-lg
-              transform active:scale-95 active:shadow-md
-              hover:scale-105 hover:shadow-xl
-              relative overflow-hidden
-              group
-            "
-          >
-            <span className="relative z-10">
+          <div className="mb-6">
+            <RemoteButton onClick={handleToggle} variant="primary">
               {showRemote ? 'Hide' : 'Show'} Remote Component
-            </span>
-
-            {/* Ripple effect on click */}
-            <span
-              className="
-              absolute inset-0 rounded-lg
-              bg-white opacity-0 
-              group-active:opacity-20
-              transition-opacity duration-300
-            "
-            />
-
-            {/* Shimmer effect on hover */}
-            <span
-              className="
-              absolute inset-0 rounded-lg
-              bg-gradient-to-r from-transparent via-white to-transparent
-              opacity-0 group-hover:opacity-10
-              transform -skew-x-12 -translate-x-full
-              group-hover:translate-x-full
-              transition-all duration-1000 ease-out
-            "
-            />
-          </button>
+            </RemoteButton>
+          </div>
 
           {showRemote && (
             <div
@@ -73,14 +37,12 @@ const Demo1: React.FC = () => {
                   : 'opacity-100 transform translate-y-0'
               }`}
             >
-              <RemoteComponent
-                module="ButtonMustFail"
-                scope="remote"
+              <RemoteButton
                 onClick={() => alert('Remote button clicked!')}
-                variant="primary"
+                variant="secondary"
               >
-                Remote Button
-              </RemoteComponent>
+                Click Me - I'm from Remote!
+              </RemoteButton>
             </div>
           )}
         </div>
