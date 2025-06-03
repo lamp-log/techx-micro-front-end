@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import RemoteButton from '../RemoteButton'
-import RemoteComponent from '../RemoteComponent'
+import Button from 'remote/Button'
+import Counter from 'remote/Counter'
 
 const Demo2: React.FC = () => {
   const [showCounter, setShowCounter] = useState(false)
@@ -26,9 +26,9 @@ const Demo2: React.FC = () => {
           </p>
 
           <div className="mb-6">
-            <RemoteButton onClick={handleToggle} variant="primary">
+            <Button onClick={handleToggle} variant="primary">
               {showCounter ? 'Hide' : 'Show'} Counter
-            </RemoteButton>
+            </Button>
           </div>
 
           {showCounter && (
@@ -39,7 +39,7 @@ const Demo2: React.FC = () => {
                   : 'opacity-100 transform translate-y-0'
               }`}
             >
-              <RemoteComponent module="Counter" scope="remote" />
+              <Counter />
             </div>
           )}
         </div>

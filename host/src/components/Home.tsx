@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import RemoteButton from './RemoteButton'
+import Button from 'remote/Button'
 
 interface TechStackItem {
   name: string
@@ -83,14 +83,14 @@ const Home: React.FC = () => {
                 <h3 className="text-lg font-semibold text-purple-400">
                   Tech Stack
                 </h3>
-                <RemoteButton
+                <Button
                   onClick={() => setExpandedItems(new Set())}
                   disabled={expandedItems.size === 0}
                   size="sm"
                   variant="secondary"
                 >
                   Collapse All
-                </RemoteButton>
+                </Button>
               </div>
               <ul className="space-y-2">
                 {techStack.map((item) => (

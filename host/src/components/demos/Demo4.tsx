@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import UserProvider, { useUser } from 'remote/UserContext'
-import RemoteButton from '../RemoteButton'
+import Button from 'remote/Button'
 
 const Demo4Content: React.FC = () => {
   const { user, setUser } = useUser()
@@ -55,9 +55,9 @@ const Demo4Content: React.FC = () => {
                   </p>
                   <p className="text-gray-300">Email: {user.email}</p>
                 </div>
-                <RemoteButton onClick={handleLogout} variant="danger">
+                <Button onClick={handleLogout} variant="danger">
                   Logout
-                </RemoteButton>
+                </Button>
               </div>
             ) : (
               <div>
@@ -70,9 +70,9 @@ const Demo4Content: React.FC = () => {
                 >
                   <p className="text-gray-400">Not logged in</p>
                 </div>
-                <RemoteButton onClick={handleLogin} variant="success">
+                <Button onClick={handleLogin} variant="success">
                   Login
-                </RemoteButton>
+                </Button>
               </div>
             )}
           </div>

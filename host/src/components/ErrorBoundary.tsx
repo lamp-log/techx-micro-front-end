@@ -26,6 +26,12 @@ class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
+      // Use custom fallback if provided
+      if (this.props.fallback) {
+        return <>{this.props.fallback}</>
+      }
+      
+      // Default error UI
       return (
         this.props.fallback || (
           <div className="p-6 bg-red-900/20 border border-red-700/50 rounded-lg">

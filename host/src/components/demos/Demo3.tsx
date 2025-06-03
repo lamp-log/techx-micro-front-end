@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import RemoteButton from '../RemoteButton'
+import Button from 'remote/Button'
 
 const Demo3: React.FC = () => {
   const navigate = useNavigate()
@@ -17,21 +17,21 @@ const Demo3: React.FC = () => {
             routing system.
           </p>
           <div className="space-y-3">
-            <RemoteButton
+            <Button
               onClick={() => navigate('/remote/page1')}
               variant="primary"
               fullWidth={true}
             >
               Navigate to Remote Page 1
-            </RemoteButton>
+            </Button>
 
-            <RemoteButton
+            <Button
               onClick={() => navigate('/remote/page2')}
               variant="secondary"
               fullWidth={true}
             >
               Navigate to Remote Page 2
-            </RemoteButton>
+            </Button>
           </div>
         </div>
       </div>
