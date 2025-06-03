@@ -25,20 +25,20 @@ export default defineConfig({
     //   shared: ['react', 'react-dom', 'react-router-dom'],
     // }),
   ],
-  // build: {
-  //   modulePreload: false,
-  //   target: 'esnext',
-  //   minify: false,
-  //   cssCodeSplit: false,
-  // },
+  build: {
+    modulePreload: false,
+    target: 'esnext',
+    minify: false,
+    cssCodeSplit: false,
+  },
   server: {
     port: 5001,
     cors: true,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-    }
+      'Access-Control-Allow-Origin': '*',
+    },
   },
   preview: {
-    port: 5001
-  }
+    port: 5001,
+  },
 })
