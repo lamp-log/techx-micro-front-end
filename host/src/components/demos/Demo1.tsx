@@ -3,11 +3,7 @@ import ErrorBoundary from '../ErrorBoundary'
 import Button from 'remote/Button'
 
 // Create a component that will fail to demonstrate error boundary
-const FailingButton = lazy(() =>
-  import('remote/ButtonThatDoesNotExist').catch(() => {
-    throw new Error('Failed to load remote component')
-  }),
-)
+const FailingButton = lazy(() => import('remote/ButtonThatDoesNotExist'))
 
 const Demo1: React.FC = () => {
   const [showRemote, setShowRemote] = useState(false)
