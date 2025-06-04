@@ -84,10 +84,10 @@ const Home: React.FC = () => {
                 </h3>
                 <button
                   onClick={() => setExpandedItems(new Set())}
-                  className="px-3 py-1 text-sm rounded-lg font-medium transition-all duration-200 transform active:scale-95 active:shadow-md hover:scale-105
-                hover:shadow-xl shadow-lg relative overflow-hidden group inline-block opacity-50 cursor-not-allowed bg-gradient-to-r 
-                from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 "
-                  disabled={expandedItems.size === 0}
+                  className={`px-3 py-1 text-sm rounded-lg font-medium transition-all duration-200 transform active:scale-95 
+                    active:shadow-md hover:scale-105 hover:shadow-xl shadow-lg relative overflow-hidden group inline-block 
+                    bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 
+                    ${expandedItems.size === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   Collapse All
                 </button>
