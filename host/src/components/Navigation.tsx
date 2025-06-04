@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 const Navigation: React.FC = () => {
   const location = useLocation()
-  
+
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/demo1', label: 'Error Boundary' },
@@ -34,9 +34,10 @@ const Navigation: React.FC = () => {
                       relative px-3 py-2 rounded-md text-sm font-medium 
                       transition-all duration-200 flex items-center
                       transform active:scale-95
-                      ${isActive 
-                        ? 'text-white bg-gray-700 shadow-lg' 
-                        : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                      ${
+                        isActive
+                          ? 'text-white bg-gray-700 shadow-lg'
+                          : 'text-gray-300 hover:text-white hover:bg-gray-700'
                       }
                     `}
                   >
@@ -44,17 +45,19 @@ const Navigation: React.FC = () => {
                     {isActive && (
                       <span className="absolute inset-x-0 -bottom-px h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full" />
                     )}
-                    
+
                     {/* Click ripple effect container */}
                     <span className="relative overflow-hidden">
                       {item.label}
-                      
+
                       {/* Hover glow effect */}
-                      <span className={`
+                      <span
+                        className={`
                         absolute inset-0 rounded-md opacity-0 hover:opacity-10 
                         bg-gradient-to-r from-blue-400 to-purple-500 
                         transition-opacity duration-300 pointer-events-none
-                      `} />
+                      `}
+                      />
                     </span>
                   </Link>
                 )

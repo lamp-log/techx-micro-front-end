@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Button from 'remote/Button'
-import Counter from 'remote/Counter'
+import Button from '../remote/Button'
+import Counter from '../remote/Counter'
 
 const Demo2: React.FC = () => {
   const [showCounter, setShowCounter] = useState(false)

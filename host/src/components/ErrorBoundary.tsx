@@ -30,7 +30,7 @@ class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) {
         return <>{this.props.fallback}</>
       }
-      
+
       // Default error UI
       return (
         this.props.fallback || (

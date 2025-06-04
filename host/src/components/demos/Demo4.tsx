@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import UserProvider, { useUser } from 'remote/UserContext'
-import Button from 'remote/Button'
+import UserProvider from '../remote/UserContext.provider'
+import { useUser } from '../remote/UserContext.hook'
+import Button from '../remote/Button'
 
 const Demo4Content: React.FC = () => {
   const { user, setUser } = useUser()

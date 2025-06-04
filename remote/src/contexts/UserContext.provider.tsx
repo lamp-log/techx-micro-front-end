@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { UserContext } from './UserContext.context'
 import type { User } from './UserContext.context'
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export interface UserProviderProps {
+  children: React.ReactNode
+}
+
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
 
   return (

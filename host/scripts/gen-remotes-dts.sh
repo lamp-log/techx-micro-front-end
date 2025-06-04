@@ -67,15 +67,13 @@ grep -E '^\s*['"'"'"]\.\/[^'"'"'"]+['"'"'"]\s*:\s*['"'"'"]' "$REMOTE_VITE_CONFIG
       extract_content "$REMOTE_DIR/contexts/UserContext.context.d.ts" "  " >> "$OUT_FILE"
       echo "" >> "$OUT_FILE"
       
-      # Extract UserProvider
-      echo "  export declare const UserProvider: React.FC<{ children: React.ReactNode }>;" >> "$OUT_FILE"
-      
       # Extract useUser
       echo "  export declare const useUser: () => UserContextType;" >> "$OUT_FILE"
       
       # Default export
-      echo "  const UserProvider: React.FC<{ children: React.ReactNode }>;" >> "$OUT_FILE"
+      extract_content "$REMOTE_DIR/contexts/UserContext.provider.d.ts" "  " >> "$OUT_FILE"
       echo "  export default UserProvider;" >> "$OUT_FILE"
+      echo "" >> "$OUT_FILE"
     else
       # For other modules, extract content normally
       extract_content "$type_file" "  " >> "$OUT_FILE"

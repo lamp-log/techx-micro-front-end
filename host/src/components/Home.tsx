@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Button from 'remote/Button'
+import Button from '../components/remote/Button'
 
 interface TechStackItem {
   name: string

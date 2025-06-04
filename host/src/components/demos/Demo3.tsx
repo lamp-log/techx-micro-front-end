@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from 'remote/Button'
+import Button from '../remote/Button'
 
 const Demo3: React.FC = () => {
   const navigate = useNavigate()

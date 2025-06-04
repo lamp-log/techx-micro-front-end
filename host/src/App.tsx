@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import RemoteRoutes from 'remote/routes'
+import RemoteRoutes from './components/remote/Routes'
 
 // Components
 import Layout from './components/Layout'
