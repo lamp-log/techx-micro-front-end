@@ -50,22 +50,6 @@ const Demo1: React.FC = () => {
               </div>
             )}
           </div>
-
-          {/* Network failure simulation */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-300 mb-3">
-              3. Network Failure Simulation
-            </h3>
-            <p className="text-sm text-gray-400 mb-3">
-              To simulate network failure:
-            </p>
-            <ol className="list-decimal list-inside text-sm text-gray-400 space-y-1 mb-3">
-              <li>Open DevTools → Network tab</li>
-              <li>Set throttling to "Offline"</li>
-              <li>Refresh the page</li>
-              <li>Try loading components above</li>
-            </ol>
-          </div>
         </div>
       </div>
     </div>
