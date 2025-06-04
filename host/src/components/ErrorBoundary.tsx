@@ -42,12 +42,6 @@ class ErrorBoundary extends Component<Props, State> {
               <summary>Error details</summary>
               {this.state.error?.toString()}
             </details>
-            <button
-              onClick={() => this.setState({ hasError: false })}
-              className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Try again
-            </button>
           </div>
         )
       )

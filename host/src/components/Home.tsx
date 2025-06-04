@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Button from '../components/remote/Button'
 
 interface TechStackItem {
   name: string
@@ -83,14 +82,15 @@ const Home: React.FC = () => {
                 <h3 className="text-lg font-semibold text-purple-400">
                   Tech Stack
                 </h3>
-                <Button
+                <button
                   onClick={() => setExpandedItems(new Set())}
+                  className="px-3 py-1 text-sm rounded-lg font-medium transition-all duration-200 transform active:scale-95 active:shadow-md hover:scale-105
+                hover:shadow-xl shadow-lg relative overflow-hidden group inline-block opacity-50 cursor-not-allowed bg-gradient-to-r 
+                from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 "
                   disabled={expandedItems.size === 0}
-                  size="sm"
-                  variant="secondary"
                 >
                   Collapse All
-                </Button>
+                </button>
               </div>
               <ul className="space-y-2">
                 {techStack.map((item) => (
